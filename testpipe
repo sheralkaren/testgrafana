@@ -12,7 +12,7 @@ pipeline{
         stage('Clone the repo')
         {
             steps{
-                git 'https://github.com/sheralkaren/DevOpsCodeDemo.git'
+                git 'https://github.com/sheralkaren/Grafanafile.git'
             }
         }
         stage('Compile the code'){
@@ -35,5 +35,21 @@ pipeline{
                 sh 'mvn package'
             }
         }
+          stage('install grafana'){
+            steps{
+              sh 'yum install -y https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-5.0.3-1.x86_64.rpm'
+            }
+        }
+           stage('start grafana'){
+            steps{
+              sh 'service grafana-server start'
+            }
+        }
+          stage('add grafana'){
+            steps{
+              sh '/sbin/chkconfig --add grafana-server'
+            }
+        }
+
     }
 }
